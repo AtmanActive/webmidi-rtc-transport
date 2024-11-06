@@ -1,5 +1,42 @@
 /* global p2pkit, Vue */
 
+function wmwrtctr_copy_url_to_clipboard_on_click()
+{
+	
+	const dom_element = document.getElementById( 'connection-info' );
+	
+	const url = dom_element.innerHTML;
+	
+	navigator.clipboard.writeText( url );
+	
+	dom_element.setAttribute( "title", "copied to clipboard" );
+	dom_element.style.color = 'green';
+	
+	//console.log( 'URL copied to clipboard:', url );
+}
+
+function wmwrtctr_open_close_instructions()
+{
+	
+	const dom_element = document.getElementById( 'wmwrtctr_instructions' );
+	
+	if ( dom_element.style.display === 'none' )
+	{
+		dom_element.style.display = 'block';
+	}
+	else
+	{
+    dom_element.style.display = 'none';
+  }
+	
+}
+
+
+
+
+
+
+
 Vue.component('port-selector', {
   template: '#port-selector',
   props: ['available', 'selected'],
@@ -23,13 +60,13 @@ Vue.component('port-selector', {
 })
 
 const trackersAnnounceURLs = [
-  'wss://tracker.btorrent.xyz',
+  //'wss://tracker.btorrent.xyz',
   'wss://tracker.openwebtorrent.com',
-  'wss://tracker.fastcast.nz',
-  'wss://tracker.sloppyta.co:443/',
+  //'wss://tracker.fastcast.nz',
+  //'wss://tracker.sloppyta.co:443/',
   'wss://tracker.novage.com.ua:443/',
-  'wss://spacetradersapi-chatbox.herokuapp.com:443/announce',
-  'wss://tracker.files.fm:7073/announce',
+  //'wss://spacetradersapi-chatbox.herokuapp.com:443/announce',
+  //'wss://tracker.files.fm:7073/announce',
 ]
 const peers = new Set()
 
@@ -55,6 +92,10 @@ const app = new Vue({
     availableOutputs: [],
     currentInputPort: null,
     currentOutputPort: null,
+		hardCodedNameInput:  "WebRTC-Outgoing", // A MIDI PORT THAT IS CONSIDERED OUTGOING FROM THIS DEVICE PERSPECTIVE
+		hardCodedNameOutput: "WebRTC-Incoming", // A MIDI PORT THAT IS CONSIDERED INCOMING FROM THIS DEVICE PERSPECTIVE
+		midiInputPortName: "",
+		midiOutputPortName: "",
     received: 0,
     sent: 0,
     activeConnections: 0,
@@ -74,7 +115,11 @@ const app = new Vue({
     selectedInput: {
       handler(nextValue, currentValue) {
         this.currentInputPort = nextValue != null ? this.midiAccess.inputs.get(nextValue) : null
-        console.log('currentInputPort =>', this.currentInputPort)
+        console.log('currentInputPort =>', this.currentInputPort);
+				if ( this.currentInputPort ) 
+				{
+					this.currentInputPort.open(); console.log( 'currentInputPort open' );
+				}
       },
       immediate: true
     },
@@ -110,7 +155,7 @@ const app = new Vue({
       console.warn('trackerwarning =>', error, stats)
     })
     p2pt.on('trackerconnect', (tracker, stats) => {
-      console.log('trackerconnect =>', tracker, stats)
+      //console.log('trackerconnect =>', tracker, stats)
     })
     p2pt.on('peerconnect', (peer) => {
       console.log('peerconnect =>', peer)
@@ -122,43 +167,114 @@ const app = new Vue({
       peers.delete(peer)
       updateStats()
     })
-    p2pt.on('msg', (peer, message) => {
-      console.log('received <= ' + message.data)
-      this.received++
-      if (this.currentOutputPort) {
-        this.currentOutputPort.send(message.data)
-      }
-    })
+		
+    p2pt.on
+		(
+			'msg', ( peer, message ) => 
+			{
+				
+				// console.log( 'received from p2p <= ' + JSON.stringify( peer ) + ", data: " + message.data );
+				
+				this.received++;
+				
+				if ( this.currentOutputPort ) 
+				{
+					this.currentOutputPort.send( message.data );
+				}
+			}
+		);
+		
     p2pt.start()
     window.p2pt = this.p2pt = p2pt
-    try {
-      const access = this.midiAccess = await navigator.requestMIDIAccess({ sysex: false })
-      const refreshPorts = () => {
-        this.availableInputs = getKeys(access.inputs).map(key => ({
+    
+		try 
+		{
+			
+      const access = this.midiAccess = await navigator.requestMIDIAccess( { sysex: false, software: true } );
+      
+			const refreshPorts = () => 
+			{
+        this.availableInputs = getKeys( access.inputs ).map(key => ({
           key,
           name: access.inputs.get(key).name
         }))
-        this.availableOutputs = getKeys(access.outputs).map(key => ({
+        this.availableOutputs = getKeys( access.outputs ).map(key => ({
           key,
           name: access.outputs.get(key).name
         }))
-      }
-      access.onstatechange = refreshPorts
-      refreshPorts()
-    } catch (e) {
+      };
+			
+      access.onstatechange = refreshPorts;
+			
+      refreshPorts();
+			
+			const bindToPorts = () => 
+			{
+				
+				this.currentInputPort  = matchName( access.inputs, this.hardCodedNameInput );
+				this.currentOutputPort = matchName( access.outputs, this.hardCodedNameOutput );
+				
+				console.log( 'bindToPorts(): currentInputPort =>', this.currentInputPort );
+				console.log( 'bindToPorts(): currentOutputPort =>', this.currentOutputPort );
+				
+				this.midiInputPortName  = this.currentInputPort.name;
+				this.midiOutputPortName = this.currentOutputPort.name;
+				
+			};
+			
+			bindToPorts();
+			
+    }
+		catch (e) 
+		{
       console.log( 'Failed to request MIDI access! ' + e )
       this.error = ( 'Failed to request MIDI access! ' + e )
     }
+		
   }
 })
 
-function getKeys(portMap) {
-  const keys = []
-  const iterator = portMap.keys()
-  for (;;) {
-    const { done, value: key } = iterator.next()
-    if (done) break
-    keys.push(key)
+function getKeys( portMap ) 
+{
+  const keys = [];
+  const iterator = portMap.keys();
+  
+	for (;;) 
+	{
+    const { done, value: key } = iterator.next();
+    if ( done ) break;
+    keys.push( key );
   }
-  return keys
+	
+  return keys;
+	
+}
+
+
+
+function matchName( portMap, toMatch )  
+{
+	
+  var port_key = null;
+	var port = null;
+  const iterator = portMap.keys();
+  
+	for (;;) 
+	{
+    const { done, value: key } = iterator.next();
+    if ( done ) break;
+		
+		port = portMap.get( key );
+		
+		//console.log( "matchName(): port: " + port.name );
+		
+		if ( port.name === toMatch )
+		{
+			port_key = key;
+			break;
+		}
+  }
+	
+  return port;
+	
 }

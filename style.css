@@ -1,7 +1,160 @@
-.port-selector .is-selected {
-  font-weight: bold;
+body
+{
+	color: white;
+	background-color: black;
+	padding: 0em 1em;
 }
 
-.arrow {
-  padding: 1em;
+a
+{
+	color: white;
+  text-decoration: none;
 }
+a:hover
+{
+	color: #4f83e5;
+}
+
+.wmwrtctr_title
+{
+	text-align: center;
+	font-family: monospace;
+	font-size: xxx-large;
+	color: cornflowerblue;
+	text-shadow: 0px -1px 0px white;
+	background-color: #292929;
+	border-radius: 5px;
+	margin-top: 0px;
+	line-height: 2em;
+	zoom: 0.8;
+}
+
+.wmwrtctr_titl_icon
+{
+	position: relative;
+	top: 15px;
+	display: inline;
+}
+
+.wmwrtctr_intro_text
+{
+	font-family: system-ui;
+	font-size: x-small;
+	font-weight: 600;
+	color: #dddddd;
+}
+
+.wmwrtctr_instructions_affordance
+{
+	cursor: pointer;
+	font-size: larger;
+}
+
+
+.wmwrtctr_peer_link_label
+{
+	text-align: center;
+	font-family: sans-serif;
+	font-size: medium;
+	color: #4f83e5;
+}
+
+.wmwrtctr_peer_link_url
+{
+	text-align: center;
+	font-family: monospace;
+	font-size: x-large;
+	color: #ffd600;
+	cursor: pointer;
+	background-color: #232500;
+	border-radius: 5px;
+}
+
+.wmwrtctr_center_display
+{
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+	align-content: space-around;
+	justify-content: center;
+	align-items: stretch;
+	background-color: #011400;
+	border-radius: 5px;
+}
+
+.wmwrtctr_port_labels
+{
+	font-family: sans-serif;
+	font-size: medium;
+	text-align: center;
+	color: #6c9932;
+}
+
+.port-selector .is-selected 
+{
+	font-weight: bold;
+	border: 1px solid;
+	border-radius: 5px;
+}
+
+.wmwrtctr_error
+{
+	color: red;
+}
+
+.wmwrtctr_port_name
+{
+	font-family: monospace;
+	font-size: x-large;
+	color: green;
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 2px 12px;
+	top: 1em;
+	position: relative;
+}
+
+.wmwrtctr_counters
+{
+	border: 1px solid;
+	min-width: 12em;
+	border-radius: 5px;
+	font-family: monospace;
+	font-size: larger;
+	color: #059162;
+}
+
+.wmwrtctr_arrow
+{
+	font-size: xx-large;
+	height: 1em;
+	vertical-align: middle;
+	padding: 1em;
+}
+
+.wmwrtctr_instructions
+{
+	text-align: justify;
+	font-family: sans-serif;
+	color: #b9b9b9;
+	font-size: large;
+	padding: 2em;
+	border: 1px solid #002399;
+	border-radius: 5px;
+}
+
+
+.wmwrtctr_signature
+{
+	text-align: center;
+	font-family: sans-serif;
+	color: #b9b9b9;
+	font-weight: 600;
+	font-size: small;
+	background-color: #232323;
+	border-radius: 5px;
+}
+
