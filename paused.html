@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-dtinth>
   <head>
-    <title>WebMIDI via WebRTC</title>
+    <title>WebMIDI PAUSED</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,11 +24,12 @@
   </head>
 	
   <body>
-    <h1 class="wmwrtctr_title"><img src="./midi.png" class="wmwrtctr_titl_icon"> WebMIDI + WebRTC p2p Transport</h1>
 		
-		<div class="wmwrtctr_pause_line">
-			<button onclick="window.location.href = './paused.html'" class="wmwrtctr_pause_button" title="Pause the MIDI engine if your MIDI ports are locked and you can't access them from other apps">
-				PAUSE
+    <h1 class="wmwrtctr_title"><img src="./midi.png" class="wmwrtctr_titl_icon"> WebMIDI + WebRTC p2p Transport is now paused</h1>
+		
+		<div class="wmwrtctr_resume_line">
+			<button onclick="window.history.go(-1); return false;" class="wmwrtctr_resume_button" title="Resume the MIDI engine once you have your other apps lock their MIDI ports">
+				RESUME
 			</button>
 		</div>
 		
@@ -40,47 +41,15 @@
 			stops, everyone receives the MIDI stop signal so their communication microphones 
 			can automatically unmute. <a onClick="JavaScript: wmwrtctr_open_close_instructions();" class="wmwrtctr_instructions_affordance">[Instructions]</a>
 		</p>
-
-    <div id="app" class="container">
-      
-			<p class="wmwrtctr_peer_link_label">Peer Link:</p>
-			<p id="connection-info" class="wmwrtctr_peer_link_url" onClick="JavaScript: wmwrtctr_copy_url_to_clipboard_on_click();" title="click to copy to clipboard">{{url}}</p>
-			
-      <template v-if="error">
-        <div class="wmwrtctr_error">
-					{{ error }}
-				</div>
-      </template>
-      <template v-else>
-				
-        <div class="wmwrtctr_center_display">
-          <div>
-            <h2 class="wmwrtctr_port_labels">MIDI input</h2>
-            <!-- <port-selector :selected="currentInput" :available="availableInputs" @select="selectedInput = $event"></port-selector> -->
-						<div class="wmwrtctr_port_name">{{midiInputPortName}}</div>
-          </div>
-          <div class="align-self-center wmwrtctr_arrow">
-            &rarr;
-          </div>
-          <div>
-            <h2 class="wmwrtctr_port_labels">WebRTC</h2>
-            <ul class="wmwrtctr_counters">
-							<li>Peers: {{ activeConnections }}</li>
-              <li>Received: {{ received }}</li>
-              <li>Sent: {{ sent }}</li>
-            </ul>
-          </div>
-          <div class="align-self-center wmwrtctr_arrow">
-            &rarr;
-          </div>
-          <div>
-            <h2 class="wmwrtctr_port_labels">MIDI output</h2>
-            <!-- <port-selector :selected="currentOutput" :available="availableOutputs" @select="selectedOutput = $event"></port-selector> -->
-						<div class="wmwrtctr_port_name">{{midiOutputPortName}}</div>
-          </div>
-        </div>
-      </template>
-    </div>
+		
+		<div class="wmwrtctr_all_engines_stopped">
+			<div class="wmwrtctr_one_engine_stopped">
+				WebMIDI engine deactivated
+			</div>
+			<div class="wmwrtctr_one_engine_stopped">
+				&nbsp;WebRTC engine deactivated
+			</div>
+		</div>
 		
 		<p class="wmwrtctr_instructions" id="wmwrtctr_instructions" style="display: none;">
 			Usage instructions for Windows:
@@ -122,23 +91,23 @@
 			Powered by simple-peer, P2PT and Web MIDI API.
     </p>
 		
-    <script type="x-template" id="port-selector">
-      <div>
-        <ul class="port-selector">
-          <li v-for="option of options" :key="option.key" :class="{ 'is-selected': option.selected }">
-            <a href="javascript:" @click="select(option)">{{ option.text }}</a>
-          </li>
-        </ul>
-      </div>
-    </script>
+		<script>
+			function wmwrtctr_open_close_instructions()
+			{
+				
+				const dom_element = document.getElementById( 'wmwrtctr_instructions' );
+				
+				if ( dom_element.style.display === 'none' )
+				{
+					dom_element.style.display = 'block';
+				}
+				else
+				{
+					dom_element.style.display = 'none';
+				}
+				
+			}
+		</script>
 		
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/p2pkit@0.0.0-2/dist/index.js"
-      integrity="sha256-IBqKNNdZBkvlyBDTBnPO57idR/RhhMygjQ59d9MsNZ4="
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="./script.js"></script>
   </body>
 </html>

@@ -100,6 +100,13 @@ const app = new Vue({
     sent: 0,
     activeConnections: 0,
   },
+	methods: 
+	{
+		pauseMIDIEngine: function() 
+		{
+			window.location.href = "./paused.html";
+		}
+	},
   computed: {
     url() {
       return this.baseUrl + '#' + roomId
