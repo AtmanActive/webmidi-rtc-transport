@@ -43,6 +43,15 @@ Thus, make sure to start this browser tab last, after you have your DAW and othe
 MIDI utilities running. For quick adjustments, you can use the app's PAUSE button. 
 
 
+
+For slower internet connections, DAW's Mackie MIDI packet stream might overwhelm 
+WebRTC. This will manifest itself as play/stop signals having an ever increasing lag.
+In [Reaper DAW](https://reaper.fm) this can be fixed by lowering Control Surface 
+display update frequency in Settings->Control/OSC/Web. 
+For other DAWs, one solution could be using [Bome Translator](https://www.bome.com/products/miditranslator) 
+to filter out all Mackie MIDI events except for play and stop.
+
+
 Developed by [AtmanActive](https://github.com/AtmanActive/webmidi-rtc-transport) by expanding on the work by [dtinth](https://github.com/dtinth/midi-rtc). 
 
 
