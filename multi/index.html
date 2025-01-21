@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-dtinth>
   <head>
-    <title>WebMIDI via WebRTC</title>
+    <title>WebMIDI via WebRTC Multi</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,9 @@
 	
   <body>
     <h1 class="wmwrtctr_title"><img src="./midi.png" class="wmwrtctr_titl_icon"> 
-			WebMIDI + WebRTC p2p Transport <a href="/multi"><button class="wmwrtctr_title_button" title="Go to multi-port version">Multi -></button></a>
+			WebMIDI + WebRTC p2p Multi-Transport 
+			<button class="wmwrtctr_title_button wmwrtctr_btn_plus" title="Add channels">+</button><button class="wmwrtctr_title_button wmwrtctr_btn_minus" title="Remove channels">-</button>
+			<a href="/"><button class="wmwrtctr_title_button" title="Back to single-port version"><</button></a>
 		</h1>
 		
 		<div class="wmwrtctr_pause_line">
@@ -48,6 +50,14 @@
 			<p class="wmwrtctr_peer_link_label">Peer Link:</p>
 			<p id="connection-info" class="wmwrtctr_peer_link_url" onClick="JavaScript: wmwrtctr_copy_url_to_clipboard_on_click();" title="click to copy to clipboard">{{url}}</p>
 			
+			
+			
+			<div class="wmwrtctr_threads_container" id="wmwrtctr_threads_container">
+				
+			</div>
+			
+			
+			
       <template v-if="error">
         <div class="wmwrtctr_error">
 					{{ error }}
@@ -57,7 +67,7 @@
 				
         <div class="wmwrtctr_center_display">
           <div>
-            <h2 class="wmwrtctr_port_labels">MIDI input</h2>
+            <h2 class="wmwrtctr_port_labels">MIDI input {{this_channel_number}}</h2>
             <!-- <port-selector :selected="currentInput" :available="availableInputs" @select="selectedInput = $event"></port-selector> -->
 						<div class="wmwrtctr_port_name">{{midiInputPortName}}</div>
           </div>
@@ -65,7 +75,7 @@
             &rarr;
           </div>
           <div>
-            <h2 class="wmwrtctr_port_labels">WebRTC</h2>
+            <h2 class="wmwrtctr_port_labels">WebRTC {{this_channel_number}}</h2>
             <ul class="wmwrtctr_counters">
 							<li>Peers: {{ activeConnections }}</li>
               <li>Received: {{ received }}</li>
@@ -76,7 +86,7 @@
             &rarr;
           </div>
           <div>
-            <h2 class="wmwrtctr_port_labels">MIDI output</h2>
+            <h2 class="wmwrtctr_port_labels">MIDI output {{this_channel_number}}</h2>
             <!-- <port-selector :selected="currentOutput" :available="availableOutputs" @select="selectedOutput = $event"></port-selector> -->
 						<div class="wmwrtctr_port_name">{{midiOutputPortName}}</div>
           </div>
@@ -89,15 +99,23 @@
 			<br>
 			Preparation: install 
 			<a target="_blank" href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI virtual MIDI cable by Tobias Erichsen</a>.
-			In loopMIDI, create two virtual MIDI cables and name them: "WebRTC-Outgoing" and "WebRTC-Incoming".
-			This web app will automatically search for those two MIDI ports and connect to them. 
-			If you see other MIDI port names under MIDI input and MIDI output display on this page 
-			that means your browser didn't find the ports "WebRTC-Outgoing"/"WebRTC-Incoming", or 
+			In loopMIDI, create from two (min) to eighteen (max) virtual MIDI cables and name them: "WebRTC-1-Outgoing" and "WebRTC-1-Incoming". 
+			<br>
+			Next pair name "WebRTC-2-Outgoing" and "WebRTC-2-Incoming". 
+			<br>
+			Next pair name "WebRTC-3-Outgoing" and "WebRTC-3-Incoming". 
+			<br>
+			And so on, up to "WebRTC-9-Outgoing" and "WebRTC-9-Incoming", if desired. 
+			<br>
+			<br>
+			This web app will automatically search for those MIDI ports and connect to them. 
+			If you see some other MIDI port names under MIDI input and MIDI output display on this page 
+			that means your browser didn't find the ports "WebRTC-X-Outgoing"/"WebRTC-X-Incoming", or 
 			they are already locked by some other application.
 			<br>
 			<br>
-			Send your MIDI signals to WebRTC-Outgoing cable to have them broadcast to the group.
-			Incoming MIDI signals from the group will be sent to WebRTC-Incoming MIDI cable.
+			Send your MIDI signals to WebRTC-X-Outgoing cable to have them broadcast to the group.
+			Incoming MIDI signals from the group will be sent to WebRTC-X-Incoming MIDI cable.
 			<br>
 			<br>
 			To have your microphone automatically muted/unmuted, 
@@ -141,6 +159,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="./script.js"></script>
+    <script src="./multi.js"></script>
   </body>
 </html>

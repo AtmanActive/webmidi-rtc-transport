@@ -36,22 +36,6 @@ a:hover
 	display: inline;
 }
 
-.wmwrtctr_title_button
-{
-	cursor: pointer;
-	margin: 2px;
-	border-radius: 8px;
-	width: 129px;
-	height: 48px;
-	position: relative;
-	top: -4px;
-	background-color: #3f3f3f;
-	color: white;
-	font-family: monospace;
-	font-size: xx-large;
-	line-height: 12px;
-}
-
 .wmwrtctr_intro_text
 {
 	font-family: system-ui;
@@ -236,5 +220,68 @@ a:hover
 	font-size: small;
 	background-color: #232323;
 	border-radius: 5px;
+}
+
+
+
+
+
+.wmwrtctr_title_button
+{
+	cursor: pointer;
+	margin: 2px;
+	border-radius: 8px;
+	width: 48px;
+	height: 48px;
+	position: relative;
+	top: -6px;
+	background-color: #3f3f3f;
+	color: white;
+	font-family: monospace;
+	font-size: xx-large;
+	line-height: 15px;
+}
+
+.wmwrtctr_title_butt_disabled
+{
+	cursor: not-allowed !important;
+	opacity: 50%;
+}
+
+
+
+.wmwrtctr_threads_container
+{
+	border: 1px solid green;
+	border-radius: 10px;
+}
+
+.wmwrtctr_thread_link_url
+{
+	font-family: monospace;
+	font-size: smaller;
+	margin: 0;
+	text-align: center;
+	color: #ad8201;
+}
+
+.wmwrtctr_thread_iframe
+{
+	height: 8em;
+	width: 100%;
+	border-radius: 10px;
+	border: 1px solid #465f5a;
+	overflow: hidden;
+}
+
+
+
+
+
+.thread_body
+{
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
 }
 
