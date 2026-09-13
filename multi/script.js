@@ -118,6 +118,23 @@ const app = new Vue({
     currentOutputPort: null,
 		hardCodedNameInput:  "WebRTC-" + this_channel_id.toString() + "-Outgoing", // A MIDI PORT THAT IS CONSIDERED OUTGOING FROM THIS DEVICE PERSPECTIVE
 		hardCodedNameOutput: "WebRTC-" + this_channel_id.toString() + "-Incoming", // A MIDI PORT THAT IS CONSIDERED INCOMING FROM THIS DEVICE PERSPECTIVE
+		// LINUX FALLBACK PORT NAMES.
+		// Chromium on Linux does not expose MIDI ports created by loopMIDI-style
+		// virtual cable tools (Bome Network, or any other userspace ALSA client):
+		// it only lists ports that belong to ALSA kernel clients with an id below
+		// 16, which in practice means snd_seq_dummy, a.k.a. "Midi Through".
+		// So when the hard-coded names above are not present we fall back to two
+		// plain (non-duplex) "Midi Through" ports - one per direction. A single
+		// port cannot serve both directions: whatever is written into a port is
+		// echoed straight back out to that same port's subscribers, so the app
+		// would read its own output and re-broadcast it forever.
+		//     input  = Midi Through Port-N          ( N = channel number )
+		//     output = Midi Through Port-( N + 10 )
+		// Port-0 and Port-10 are left unused so the channel number stays visible
+		// in both names. Load the kernel module with: ports=20 duplex=0
+		// See README.md and linux_chromium_to_bome_network_bridge.sh for the aconnect wiring.
+		fallbackNameInput:  "Midi Through Port-" + this_channel_id.toString(),
+		fallbackNameOutput: "Midi Through Port-" + ( this_channel_id + 10 ).toString(),
 		midiInputPortName: "",
 		midiOutputPortName: "",
     received: 0,
@@ -250,14 +267,31 @@ const app = new Vue({
 			const bindToPorts = () => 
 			{
 				
-				this.currentInputPort  = matchName( access.inputs, this.hardCodedNameInput );
-				this.currentOutputPort = matchName( access.outputs, this.hardCodedNameOutput );
-				
+				this.currentInputPort  = matchFirstName( access.inputs,  [ this.hardCodedNameInput,  this.fallbackNameInput  ] );
+				this.currentOutputPort = matchFirstName( access.outputs, [ this.hardCodedNameOutput, this.fallbackNameOutput ] );
+
 				console.log( 'bindToPorts(): currentInputPort =>', this.currentInputPort );
 				console.log( 'bindToPorts(): currentOutputPort =>', this.currentOutputPort );
-				
-				this.midiInputPortName  = this.currentInputPort.name;
-				this.midiOutputPortName = this.currentOutputPort.name;
+
+				this.midiInputPortName  = this.currentInputPort  ? this.currentInputPort.name  : "";
+				this.midiOutputPortName = this.currentOutputPort ? this.currentOutputPort.name : "";
+
+				const missingPorts = [];
+
+				if ( ! this.currentInputPort )
+				{
+					missingPorts.push( 'input "' + this.hardCodedNameInput + '" (or "' + this.fallbackNameInput + '")' );
+				}
+
+				if ( ! this.currentOutputPort )
+				{
+					missingPorts.push( 'output "' + this.hardCodedNameOutput + '" (or "' + this.fallbackNameOutput + '")' );
+				}
+
+				if ( missingPorts.length > 0 )
+				{
+					this.error = 'MIDI port not found: ' + missingPorts.join( ', ' ) + '. See the instructions below.';
+				}
 				
 			};
 			
@@ -294,7 +328,6 @@ function getKeys( portMap )
 function matchName( portMap, toMatch )  
 {
 	
-  var port_key = null;
 	var port = null;
   const iterator = portMap.keys();
   
@@ -309,11 +342,37 @@ function matchName( portMap, toMatch )
 		
 		if ( port.name === toMatch )
 		{
-			port_key = key;
-			break;
+			return port;
 		}
   }
 	
-  return port;
+	// NOT FOUND. RETURNING null (RATHER THAN THE LAST PORT SEEN, WHICH IS WHAT
+	// THIS USED TO DO) IS WHAT LETS THE CALLER TRY THE NEXT CANDIDATE NAME.
+  return null;
+	
+}
+
+
+
+// TRIES EACH NAME IN ORDER, RETURNS THE FIRST PORT THAT EXISTS, OR null.
+// THE FIRST NAME IN THE LIST IS THE ORIGINAL HARD-CODED (WINDOWS) NAME, SO
+// WHEN THAT PORT IS PRESENT THE BEHAVIOUR IS EXACTLY AS BEFORE.
+function matchFirstName( portMap, namesToMatch )  
+{
+	
+	for ( var i = 0; i < namesToMatch.length; i++ ) 
+	{
+		const port = matchName( portMap, namesToMatch[ i ] );
+		
+		if ( port )
+		{
+			console.log( 'matchFirstName(): using port "' + namesToMatch[ i ] + '"' );
+			return port;
+		}
+		
+		console.log( 'matchFirstName(): no port named "' + namesToMatch[ i ] + '"' );
+	}
+	
+  return null;
 	
 }
