@@ -20,7 +20,7 @@
 		
 		<link rel="icon" href="./favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css?v=20260914">
   </head>
 	
   <body>
@@ -42,6 +42,39 @@
 			stops, everyone receives the MIDI stop signal so their communication microphones 
 			can automatically unmute. <a onClick="JavaScript: wmwrtctr_open_close_instructions();" class="wmwrtctr_instructions_affordance">[Instructions]</a>
 		</p>
+		<p class="wmwrtctr_instructions" id="wmwrtctr_instructions" style="display: none;">
+			Usage instructions for Windows:
+			<br>
+			Preparation: install 
+			<a target="_blank" href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI virtual MIDI cable by Tobias Erichsen</a>.
+			In loopMIDI, create two virtual MIDI cables and name them: "WebRTC-Outgoing" and "WebRTC-Incoming".
+			This web app will automatically search for those two MIDI ports and connect to them. 
+			If you see other MIDI port names under MIDI input and MIDI output display on this page 
+			that means your browser didn't find the ports "WebRTC-Outgoing"/"WebRTC-Incoming", or 
+			they are already locked by some other application.
+			<br>
+			<br>
+			Send your MIDI signals to WebRTC-Outgoing cable to have them broadcast to the group.
+			Incoming MIDI signals from the group will be sent to WebRTC-Incoming MIDI cable.
+			<br>
+			<br>
+			To have your microphone automatically muted/unmuted, 
+			<a target="_blank" href="https://github.com/AtmanActive/MIDI-Transport2Keys">check out this project</a>. 
+			For real-time p2p audio/video communication, checkout <a target="_blank" href="https://p2p.mirotalk.com">MiroTalk</a>. 
+			For real-time studio-quality audio transport from your DAW, checkout <a target="_blank" href="https://sonobus.net/">Sonobus</a>.
+			<br>
+			<br>
+			Make sure you use this web app in a 
+			<a target="_blank" href="https://en.wikipedia.org/wiki/Chromium_(web_browser)">Chromium-based browser</a>. 
+			Now you can bookmark and share this page link with your fellow musicians. 
+			Pay attention to the link part after the # sign in the address: that's your room ID.
+			<br>
+			<br>
+			As of 2024. WebMIDI on Windows locks all the available MIDI ports when active. 
+			Thus, make sure to start this browser tab last, after you have your DAW and other 
+			MIDI utilities running. For quick adjustments, you can use the app's PAUSE button. 
+		</p>
+
 
     <div id="app" class="container">
       
@@ -83,40 +116,7 @@
         </div>
       </template>
     </div>
-		
-		<p class="wmwrtctr_instructions" id="wmwrtctr_instructions" style="display: none;">
-			Usage instructions for Windows:
-			<br>
-			Preparation: install 
-			<a target="_blank" href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI virtual MIDI cable by Tobias Erichsen</a>.
-			In loopMIDI, create two virtual MIDI cables and name them: "WebRTC-Outgoing" and "WebRTC-Incoming".
-			This web app will automatically search for those two MIDI ports and connect to them. 
-			If you see other MIDI port names under MIDI input and MIDI output display on this page 
-			that means your browser didn't find the ports "WebRTC-Outgoing"/"WebRTC-Incoming", or 
-			they are already locked by some other application.
-			<br>
-			<br>
-			Send your MIDI signals to WebRTC-Outgoing cable to have them broadcast to the group.
-			Incoming MIDI signals from the group will be sent to WebRTC-Incoming MIDI cable.
-			<br>
-			<br>
-			To have your microphone automatically muted/unmuted, 
-			<a target="_blank" href="https://github.com/AtmanActive/MIDI-Transport2Keys">check out this project</a>. 
-			For real-time p2p audio/video communication, checkout <a target="_blank" href="https://p2p.mirotalk.com">MiroTalk</a>. 
-			For real-time studio-quality audio transport from your DAW, checkout <a target="_blank" href="https://sonobus.net/">Sonobus</a>.
-			<br>
-			<br>
-			Make sure you use this web app in a 
-			<a target="_blank" href="https://en.wikipedia.org/wiki/Chromium_(web_browser)">Chromium-based browser</a>. 
-			Now you can bookmark and share this page link with your fellow musicians. 
-			Pay attention to the link part after the # sign in the address: that's your room ID.
-			<br>
-			<br>
-			As of 2024. WebMIDI on Windows locks all the available MIDI ports when active. 
-			Thus, make sure to start this browser tab last, after you have your DAW and other 
-			MIDI utilities running. For quick adjustments, you can use the app's PAUSE button. 
-		</p>
-		
+				
 		<p class="wmwrtctr_signature">
       Developed by <a href="https://github.com/AtmanActive/webmidi-rtc-transport" target="_blank">AtmanActive</a> by 
 			expanding on the work by <a href="https://github.com/dtinth/midi-rtc" target="_blank">dtinth</a>. 
@@ -141,6 +141,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="./script.js"></script>
+    <script src="./script.js?v=20260914"></script>
   </body>
 </html>
