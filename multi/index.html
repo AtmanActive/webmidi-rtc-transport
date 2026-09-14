@@ -20,7 +20,7 @@
 		
 		<link rel="icon" href="./favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="./style.css?v=20260914">
+    <link rel="stylesheet" href="./style.css?v=20260915">
   </head>
 	
   <body>
@@ -44,9 +44,11 @@
 			stops, everyone receives the MIDI stop signal so their communication microphones 
 			can automatically unmute. <a onClick="JavaScript: wmwrtctr_open_close_instructions();" class="wmwrtctr_instructions_affordance">[Instructions]</a>
 		</p>
-		<p class="wmwrtctr_instructions" id="wmwrtctr_instructions" style="display: none;">
-			Usage instructions for Windows:
-			<br>
+		<div class="wmwrtctr_instructions" id="wmwrtctr_instructions" style="display: none;">
+			
+			<details class="wmwrtctr_drawer">
+				<summary class="wmwrtctr_drawer_title">Usage instructions for Windows:</summary>
+				<div class="wmwrtctr_drawer_body">
 			Preparation: install 
 			<a target="_blank" href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI virtual MIDI cable by Tobias Erichsen</a>.
 			In loopMIDI, create from two (min) to eighteen (max) virtual MIDI cables and name them: "WebRTC-1-Outgoing" and "WebRTC-1-Incoming". 
@@ -82,8 +84,25 @@
 			<br>
 			As of 2024. WebMIDI on Windows locks all the available MIDI ports when active. 
 			Thus, make sure to start this browser tab last, after you have your DAW and other 
-			MIDI utilities running. For quick adjustments, you can use the app's PAUSE button. 
-		</p>
+			MIDI utilities running. For quick adjustments, you can use the app's PAUSE button.
+				</div>
+			</details>
+			
+			<details class="wmwrtctr_drawer">
+				<summary class="wmwrtctr_drawer_title">Usage instructions for Linux (Debian 13 KDE Plasma):</summary>
+				<div class="wmwrtctr_drawer_body">
+					Install <a target="_blank" href="https://github.com/AtmanActive/Linux-MIDI-snd_seq_dummy-Router">Linux MIDI snd_seq_dummy Router</a>,
+					run it and import the settings file from
+					<a target="_blank" href="https://github.com/AtmanActive/Linux-MIDI-snd_seq_dummy-Router/raw/refs/heads/main/settings/WebMIDI_and_WebRTC_p2p_Multi-Transport.zip">here</a>.
+					Apply to Kernel and you have the ports ready for this web app.
+					On Linux, port names will show Midi Through Port-1 while in the
+					Linux MIDI snd_seq_dummy Router they will show as WebRTC-1-Incoming.
+					You can then route the ports at will using Linux MIDI snd_seq_dummy Router,
+					and also, use its built-in microphone mute function, if desired.
+				</div>
+			</details>
+			
+		</div>
 
 
     <div id="app" class="container">
@@ -155,6 +174,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="./multi.js?v=20260914"></script>
+    <script src="./multi.js?v=20260915"></script>
   </body>
 </html>

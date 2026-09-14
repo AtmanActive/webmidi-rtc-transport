@@ -238,3 +238,44 @@ a:hover
 	border-radius: 5px;
 }
 
+
+.wmwrtctr_drawer
+{
+	margin-bottom: 1em;
+}
+
+.wmwrtctr_drawer:last-of-type
+{
+	margin-bottom: 0;
+}
+
+.wmwrtctr_drawer_title
+{
+	cursor: pointer;
+	color: #7f9fff;
+	font-weight: bold;
+	padding: 0.25em 0;
+	list-style: none;
+}
+
+/* hide the default disclosure triangle, we draw our own below */
+.wmwrtctr_drawer_title::-webkit-details-marker
+{
+	display: none;
+}
+
+.wmwrtctr_drawer_title::before
+{
+	content: "\25B6\00a0";
+	font-size: smaller;
+}
+
+.wmwrtctr_drawer[open] > .wmwrtctr_drawer_title::before
+{
+	content: "\25BC\00a0";
+}
+
+.wmwrtctr_drawer_body
+{
+	padding-top: 0.75em;
+}
